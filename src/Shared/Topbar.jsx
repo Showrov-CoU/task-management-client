@@ -1,4 +1,6 @@
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
+import { useEffect, useState } from "react";
+
 import { NavLink } from "react-router-dom";
 // import { CustomFlowbiteTheme } from "flowbite-react";
 
@@ -9,8 +11,22 @@ const customTheme = {
 };
 
 const Topbar = () => {
+  const [scrolling, setScrolling] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setScrolling(true);
+    } else {
+      setScrolling(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid rounded className={`${scrolling ? "bg-slate-100 rounded-xl" : ""}`}>
       <Navbar.Brand href="#">
         <span className="self-center whitespace-nowrap text-2xl font-extrabold text-[#ff0000]">
           TaskMinder
