@@ -1,12 +1,5 @@
 import { Footer } from "flowbite-react";
-import {
-  BsDribbble,
-  BsFacebook,
-  BsGithub,
-  BsInstagram,
-  BsLinkedin,
-  BsTwitter,
-} from "react-icons/bs";
+import { BsFacebook, BsGithub, BsLinkedin } from "react-icons/bs";
 
 const Downbar = () => {
   return (

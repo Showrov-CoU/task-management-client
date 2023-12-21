@@ -1,11 +1,15 @@
-import { Button, Card } from "flowbite-react";
+import { Button, Card, Modal } from "flowbite-react";
 import PropTypes from "prop-types";
+import { useState } from "react";
+import icon from "../../public/icons8-right.gif";
+
 const customTheme = {
   color: {
     primary: "text-white bg-[#ff0000] hover:bg-[#960000] hover:text-slate-100",
   },
 };
 const BenefitCard = ({ data }) => {
+  const [openModal, setOpenModal] = useState(false);
   return (
     <div>
       <Card className="max-w-68 m-0 p-0">
@@ -17,9 +21,39 @@ const BenefitCard = ({ data }) => {
           </h5>
 
           <div className="mt-4 flex space-x-3 lg:mt-6">
-            <Button theme={customTheme} color="primary">
+            <Button
+              theme={customTheme}
+              color="primary"
+              onClick={() => setOpenModal(true)}
+            >
               See more
             </Button>
+            {/* Modal */}
+            <Modal show={openModal} onClose={() => setOpenModal(false)}>
+              <Modal.Header>{data.type}</Modal.Header>
+              <Modal.Body>
+                <div className="space-y-6">
+                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    {data.benefits.map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-2 mb-2">
+                        <img src={icon} alt="" className="size-5" />
+                        <p>{item}</p>
+                      </div>
+                    ))}
+                  </p>
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                {/* <Button onClick={() => setOpenModal(false)}>I accept</Button> */}
+                <Button
+                  color="gray"
+                  className="text-[#ff0000]"
+                  onClick={() => setOpenModal(false)}
+                >
+                  Decline
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </div>
       </Card>
