@@ -1,7 +1,7 @@
 import { Button, Card, Modal } from "flowbite-react";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import icon from "../../public/icons8-right.gif";
+import icon from "../assets/icons8-right.gif";
 
 const customTheme = {
   color: {
@@ -36,7 +36,7 @@ const BenefitCard = ({ data }) => {
                   <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                     {data.benefits.map((item, idx) => (
                       <div key={idx} className="flex items-center gap-2 mb-2">
-                        <img src={icon} alt="" className="size-5" />
+                        <img src={icon} alt="" className="size-7" />
                         <p>{item}</p>
                       </div>
                     ))}

@@ -26,7 +26,11 @@ const Topbar = () => {
   }, []);
 
   return (
-    <Navbar fluid rounded className={`${scrolling ? "bg-slate-100 rounded-xl" : ""}`}>
+    <Navbar
+      fluid
+      rounded
+      className={`${scrolling ? "bg-slate-100 rounded-xl" : ""}`}
+    >
       <Navbar.Brand href="#">
         <span className="self-center whitespace-nowrap text-2xl font-extrabold text-[#ff0000]">
           TaskMinder

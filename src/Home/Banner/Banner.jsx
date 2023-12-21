@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import animation from "../../../public/Animation - 1703103486335.json";
+import animation from "../../assets/Animation - 1703103486335.json";
 import { Button } from "flowbite-react";
 const customTheme = {
   color: {

@@ -1,11 +1,18 @@
 import { Outlet } from "react-router-dom";
-import Home from "../Home/Home/Home";
+
+import Topbar from "../Shared/Topbar";
+import Downbar from "../Shared/Downbar";
 
 const Main = () => {
   return (
     <div>
-      <Home></Home>
+      <div className="px-[5%] fixed w-full z-20">
+        <Topbar></Topbar>
+      </div>
       <Outlet></Outlet>
+      <div className="px-[5%] mt-10">
+        <Downbar></Downbar>
+      </div>
     </div>
   );
 };
