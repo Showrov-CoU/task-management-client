@@ -1,0 +1,64 @@
+[
+
+      {
+        "id":101,
+        "type": "Developers",
+        "gif":"https://i.ibb.co/rf4Zfc0/icons8-developer.gif",
+        "benefits": [
+          "Streamline project workflows",
+          "Collaborate seamlessly with team members",
+          "Effortlessly track and manage coding tasks"
+        ]
+      },
+      {
+        "id":102,
+        "type": "Corporate Professionals",
+        "gif":"https://i.ibb.co/W6QMFHY/icons8-corporate.gif",
+        "benefits": [
+          "Efficiently manage tasks and deadlines",
+          "Enhance team collaboration for greater productivity",
+          "Centralized platform for project communication"
+        ]
+      },
+      {
+        "id":103,
+        "type": "Bankers",
+        "gif":"https://i.ibb.co/3MTgdfS/icons8-online-money-transfer.gif",
+        "benefits": [
+          "Organize and prioritize financial tasks and projects",
+          "Improve coordination among banking teams",
+          "Real-time updates on critical financial tasks"
+        ]
+      },
+      {
+        "id":104,
+        "type": "Entrepreneurs",
+        "gif":"https://i.ibb.co/Fn1dydW/icons8-user-groups.gif",
+        "benefits": [
+          "Take control of business tasks with a user-friendly interface",
+          "Ensure efficient project management for ventures",
+          "Customizable task templates for unique business needs"
+        ]
+      },
+      {
+        "id":105,
+        "type": "Students",
+        "gif":"https://i.ibb.co/ZT2bX7S/icons8-auditorium.gif",
+        "benefits": [
+          "Manage academic tasks and assignments with ease",
+          "Collaborate on group projects effortlessly",
+          "Set reminders for important study deadlines"
+        ]
+      },
+      {
+        "id":106,
+        "type": "Marketing Teams",
+        "gif":"https://i.ibb.co/XsjH7JC/icons8-commercial.gif",
+        "benefits": [
+          "Coordinate campaigns seamlessly",
+          "Track marketing tasks and deadlines effortlessly",
+          "Visual analytics for campaign performance"
+        ]
+      }
+
+]

@@ -1,21 +1,24 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
+import { NavLink } from "react-router-dom";
+// import { CustomFlowbiteTheme } from "flowbite-react";
+
+const customTheme = {
+  color: {
+    primary: "text-white bg-[#ff0000] hover:bg-[#960000] hover:text-slate-100",
+  },
+};
 
 const Topbar = () => {
   return (
     <Navbar fluid rounded>
-      <Navbar.Brand href="https://flowbite-react.com">
-        {/* <img
-          src=""
-          className="mr-3 h-6 sm:h-9"
-          alt=""
-        /> */}
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+      <Navbar.Brand href="#">
+        <span className="self-center whitespace-nowrap text-2xl font-extrabold text-[#ff0000]">
           TaskMinder
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2">
         <Dropdown
-          arrowIcon={false}
+          arrowIcon={true}
           inline
           label={
             <Avatar
@@ -32,21 +35,53 @@ const Topbar = () => {
             </span>
           </Dropdown.Header>
           <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
-          <Dropdown.Divider />
           <Dropdown.Item>Sign out</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
+
       <Navbar.Collapse>
-        <Navbar.Link href="#" active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link href="#">About</Navbar.Link>
-        <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive
+              ? "text-[#ff0000] text-base flex items-center"
+              : "text-base flex items-center"
+          }
+        >
+          <span className="">Home</span>
+        </NavLink>
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            isActive
+              ? "text-[#ff0000] text-base flex items-center"
+              : "text-base flex items-center"
+          }
+        >
+          <span>Dashboard</span>
+        </NavLink>
+        <NavLink
+          to="/tasks"
+          className={({ isActive }) =>
+            isActive
+              ? "text-[#ff0000] text-base flex items-center"
+              : "text-base flex items-center"
+          }
+        >
+          <span>All Task</span>
+        </NavLink>
+
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive ? "text-[#ff0000] text-base" : "text-base"
+          }
+        >
+          <Button theme={customTheme} color="primary">
+            Login
+          </Button>
+        </NavLink>
       </Navbar.Collapse>
     </Navbar>
   );
