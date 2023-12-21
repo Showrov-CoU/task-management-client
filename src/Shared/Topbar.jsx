@@ -1,8 +1,10 @@
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-import { NavLink } from "react-router-dom";
-// import { CustomFlowbiteTheme } from "flowbite-react";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import useAuth from "./../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const customTheme = {
   color: {
@@ -11,25 +13,35 @@ const customTheme = {
 };
 
 const Topbar = () => {
-  const [scrolling, setScrolling] = useState(false);
+  // const [scrolling, setScrolling] = useState(false);
+  const { user, logOut } = useAuth();
+  const navigate = useNavigate();
+  // console.log(user);
 
-  const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setScrolling(true);
-    } else {
-      setScrolling(false);
-    }
+  const handleLogout = () => {
+    logOut()
+      .then(() => navigate("/"))
+      .catch((err) => toast.error(err.message));
   };
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+  // const handleScroll = () => {
+  //   if (window.scrollY > 0) {
+  //     setScrolling(true);
+  //   } else {
+  //     setScrolling(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   return (
     <Navbar
       fluid
       rounded
-      className={`${scrolling ? "bg-slate-100 rounded-xl" : ""}`}
+      // className={`${scrolling ? "bg-slate-100 rounded-xl" : ""}`}
+      className="bg-slate-100"
     >
       <Navbar.Brand href="#">
         <span className="self-center whitespace-nowrap text-2xl font-extrabold text-[#ff0000]">
@@ -40,22 +52,18 @@ const Topbar = () => {
         <Dropdown
           arrowIcon={true}
           inline
-          label={
-            <Avatar
-              alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              rounded
-            />
-          }
+          label={<Avatar alt="User settings" img={user?.photoURL} rounded />}
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm text-center">
+              {user?.displayName}
+            </span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              {user?.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
@@ -92,16 +100,19 @@ const Topbar = () => {
           <span>All Task</span>
         </NavLink>
 
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            isActive ? "text-[#ff0000] text-base" : "text-base"
-          }
-        >
-          <Button theme={customTheme} color="primary">
-            Login
-          </Button>
-        </NavLink>
+        {user ? (
+          <NavLink>
+            <Button onClick={handleLogout} theme={customTheme} color="primary">
+              Log out
+            </Button>
+          </NavLink>
+        ) : (
+          <NavLink to="/login">
+            <Button theme={customTheme} color="primary">
+              Log in
+            </Button>
+          </NavLink>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

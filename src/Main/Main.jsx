@@ -6,11 +6,11 @@ import Downbar from "../Shared/Downbar";
 const Main = () => {
   return (
     <div>
-      <div className="px-[5%] fixed w-full z-20">
+      <div className="fixed px-[5%] top-0 w-full z-20">
         <Topbar></Topbar>
       </div>
       <Outlet></Outlet>
-      <div className="px-[5%] mt-10">
+      <div className="px-[5%]">
         <Downbar></Downbar>
       </div>
     </div>

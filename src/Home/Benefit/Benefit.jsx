@@ -25,8 +25,7 @@ const Benefit = () => {
           approach to organized success!
         </p>
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-10">
-
+      <div className="grid grid-cols-3 gap-4 mt-10 mb-10">
         {data.map((data) => (
           <BenefitCard key={data.id} data={data}></BenefitCard>
         ))}
