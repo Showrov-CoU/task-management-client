@@ -1,6 +1,5 @@
 import {
   Button,
-  Datepicker,
   Label,
   Modal,
   Select,
@@ -13,6 +12,11 @@ import { HiDotsVertical } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
+
 const customTheme = {
   color: {
     primary:
@@ -20,11 +24,24 @@ const customTheme = {
   },
 };
 const Dashboard = () => {
+  const { register, handleSubmit, reset } = useForm();
+  const [startDate, setStartDate] = useState(new Date());
   const { user } = useAuth();
   const [openModal, setOpenModal] = useState(false);
   function onCloseModal() {
     setOpenModal(false);
   }
+
+  const handleTask = (data) => {
+    const inputDate = new Date(startDate);
+    const day = String(inputDate.getDate()).padStart(2, "0");
+    const month = String(inputDate.getMonth() + 1).padStart(2, "0");
+    const year = inputDate.getFullYear();
+
+    const newDate = `${day}-${month}-${year}`;
+    data["date"] = newDate;
+    // console.log(data);
+  };
 
   return (
     <div className="px-[5%] mt-[60px] flex">
@@ -66,48 +83,66 @@ const Dashboard = () => {
                   <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                     Create a new task to our platform
                   </h3>
-                  <div>
-                    <div className="mb-2 block">
-                      <Label htmlFor="title" value="Your task title" />
-                    </div>
-                    <TextInput id="title" placeholder="" required />
-                  </div>
-                  <div className="flex items-center gap-5">
-                    <div className="flex-1">
+                  <form onSubmit={handleSubmit(handleTask)}>
+                    <div>
                       <div className="mb-2 block">
-                        <Label
-                          htmlFor="countries"
-                          value="Select your country"
+                        <Label htmlFor="title" value="Your task title" />
+                      </div>
+                      <TextInput
+                        {...register("title")}
+                        id="title"
+                        placeholder="Task title"
+                        required
+                      />
+                    </div>
+                    <div className="flex items-center gap-5">
+                      <div className="flex-1">
+                        <div className="mb-2 block">
+                          <Label
+                            htmlFor="priorities"
+                            value="Select your priority"
+                          />
+                        </div>
+                        <Select
+                          {...register("priority")}
+                          id="countries"
+                          required
+                        >
+                          <option>Low</option>
+                          <option>Moderate</option>
+                          <option>High</option>
+                        </Select>
+                      </div>
+                      <div className="flex-1">
+                        <div className="mb-2 block">
+                          <Label htmlFor="date" value="Deadline" />
+                        </div>
+                        <DatePicker
+                          className="w-full border border-gray-300 text-gray-900 rounded-lg  p-2.5 text-center text-sm font-medium focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500  bg-gray-100"
+                          selected={startDate}
+                          onChange={(date) => setStartDate(date)}
                         />
+                        {/* <Datepicker type="date" title="Flowbite Datepicker" /> */}
                       </div>
-                      <Select id="countries" required>
-                        <option>Low</option>
-                        <option>Moderate</option>
-                        <option>High</option>
-                      </Select>
                     </div>
-                    <div className="flex-1">
+                    <div>
                       <div className="mb-2 block">
-                        <Label htmlFor="countries" value="Deadline" />
+                        <Label htmlFor="desc" value="Task description" />
                       </div>
-                      <Datepicker type="date" title="Flowbite Datepicker" />
+                      <Textarea
+                        {...register("desc")}
+                        id="comment"
+                        placeholder="Leave a comment..."
+                        required
+                        rows={4}
+                      />
                     </div>
-                  </div>
-                  <div>
-                    <div className="mb-2 block">
-                      <Label htmlFor="desc" value="Task description" />
+                    <div className="w-full">
+                      <Button type="submit">
+                        Add a task to your to-do list
+                      </Button>
                     </div>
-                    <Textarea
-                      id="comment"
-                      placeholder="Leave a comment..."
-                      required
-                      rows={4}
-                    />
-                  </div>
-
-                  <div className="w-full">
-                    <Button>Add a task to your to-do list</Button>
-                  </div>
+                  </form>
                 </div>
               </Modal.Body>
             </Modal>
