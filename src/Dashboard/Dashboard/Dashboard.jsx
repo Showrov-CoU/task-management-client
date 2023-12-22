@@ -17,22 +17,38 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 
+import useAxios from "../../Hooks/useAxios";
+import toast from "react-hot-toast";
+import TaskSection from "../TaskSection";
+import { useQuery } from "@tanstack/react-query";
+
 const customTheme = {
   color: {
     primary:
       "rounded-2xl text-white bg-[#ff0000] hover:bg-[#960000] hover:text-slate-100",
   },
 };
+
 const Dashboard = () => {
   const { register, handleSubmit, reset } = useForm();
   const [startDate, setStartDate] = useState(new Date());
   const { user } = useAuth();
+  const fetchWithAxios = useAxios();
   const [openModal, setOpenModal] = useState(false);
   function onCloseModal() {
     setOpenModal(false);
   }
 
-  const handleTask = (data) => {
+  const { data: todoTaskList = [], refetch } = useQuery({
+    queryKey: ["todoTaskList"],
+    queryFn: async () => {
+      const result = await fetchWithAxios.get("/todo");
+      // console.log(result.data);
+      return result.data;
+    },
+  });
+
+  const handleTask = async (data) => {
     const inputDate = new Date(startDate);
     const day = String(inputDate.getDate()).padStart(2, "0");
     const month = String(inputDate.getMonth() + 1).padStart(2, "0");
@@ -41,10 +57,30 @@ const Dashboard = () => {
     const newDate = `${day}-${month}-${year}`;
     data["date"] = newDate;
     // console.log(data);
+
+    const res = await fetchWithAxios.post("/todo", data);
+    console.log(res.data);
+    if (res.data.insertedId) {
+      refetch();
+      toast.success("Create successfully");
+      reset();
+    } else {
+      toast.error("Something is wrong..!!! try again");
+    }
+  };
+
+  const deleteTask = async (id) => {
+    const res = await fetchWithAxios.delete(`/todo/${id}`);
+    if (res.data.deletedCount) {
+      refetch();
+      toast.success("Delete successfully");
+    } else {
+      toast.error("Something is wrong..!!! try again");
+    }
   };
 
   return (
-    <div className="px-[5%] mt-[60px] flex">
+    <div className="px-[5%] mt-[60px] flex h-screen">
       <div className=" bg-slate-100 w-2/12 h-full">
         <div className="flex flex-col justify-center items-center space-y-2">
           <img
@@ -54,7 +90,7 @@ const Dashboard = () => {
           />
           <p className="text-sm">{user?.displayName}</p>
           <p className="text-sm">{user?.email}</p>
-          <div className="h-[2px] w-full bg-slate-500"></div>
+          <div className="h-[1px] w-full bg-slate-500"></div>
         </div>
         <div className="flex flex-col">
           <NavLink>Sign Up</NavLink>
@@ -64,8 +100,8 @@ const Dashboard = () => {
           <NavLink>Sign Up</NavLink>
         </div>
       </div>
-      <div className=" bg-slate-300  flex-1 h-full">
-        <div className="p-8 flex justify-between">
+      <div className="p-8 bg-slate-300  flex-1 h-full overflow-y-auto">
+        <div className="mb-5 flex justify-between">
           <p className="text-2xl font-extrabold">Manage Task</p>
           <div className="flex justify-center items-center">
             <Button
@@ -132,12 +168,12 @@ const Dashboard = () => {
                       <Textarea
                         {...register("desc")}
                         id="comment"
-                        placeholder="Leave a comment..."
+                        placeholder="Add some details..."
                         required
                         rows={4}
                       />
                     </div>
-                    <div className="w-full">
+                    <div className="w-full mt-2">
                       <Button type="submit">
                         Add a task to your to-do list
                       </Button>
@@ -150,6 +186,13 @@ const Dashboard = () => {
               <HiDotsVertical size={32} fill="#ff0000"></HiDotsVertical>
             </span>
           </div>
+        </div>
+        <div className="grid grid-cols-3 gap-10">
+          <TaskSection
+            todoTaskList={todoTaskList}
+            deleteTask={deleteTask}
+            refetch={refetch}
+          ></TaskSection>
         </div>
       </div>
     </div>
