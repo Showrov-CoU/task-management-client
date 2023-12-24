@@ -7,7 +7,7 @@ const Home = () => {
       <div id="nav" className="px-[5%] md:pl-[6%] md:pr-[0%] ">
         <Banner></Banner>
       </div>
-      <div id="benefit" className="px-[15%]">
+      <div id="benefit" className="px-[5%] md:px-[15%]">
         <Benefit></Benefit>
       </div>
     </div>

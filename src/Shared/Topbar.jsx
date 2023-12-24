@@ -90,7 +90,7 @@ const Topbar = () => {
           <span>Dashboard</span>
         </NavLink>
         <NavLink
-          to="/tasks"
+          to="/alltask"
           className={({ isActive }) =>
             isActive
               ? "text-[#ff0000] text-base flex items-center"

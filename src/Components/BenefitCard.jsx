@@ -1,7 +1,9 @@
 import { Button, Card, Modal } from "flowbite-react";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import icon from "../assets/icons8-right.gif";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const customTheme = {
   color: {
@@ -10,9 +12,12 @@ const customTheme = {
 };
 const BenefitCard = ({ data }) => {
   const [openModal, setOpenModal] = useState(false);
+  useEffect(() => {
+    Aos.init();
+  });
   return (
-    <div>
-      <Card className="max-w-68 m-0 p-0">
+    <div data-aos="zoom-in">
+      <Card className="md:max-w-68 m-0 p-0">
         <div className="flex flex-col items-center pb-10">
           <img src="" alt="" />
           <img alt="Bonnie image" src={data.gif} className="mb-3 size-20" />

@@ -9,7 +9,7 @@ import {
 import useAuth from "../../Hooks/useAuth";
 import { FaPlus } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import DatePicker from "react-datepicker";
@@ -24,12 +24,16 @@ import { useQuery } from "@tanstack/react-query";
 
 const customTheme = {
   color: {
-    primary:
-      "rounded-2xl text-white bg-[#ff0000] hover:bg-[#960000] hover:text-slate-100",
+    primary: "text-white bg-[#ff0000] hover:bg-[#960000] hover:text-slate-100",
+    black: "text-white bg-[#000] hover:bg-[#ff0000] hover:text-slate-100",
   },
 };
 
 const Dashboard = () => {
+  const [todo, setTodo] = useState([]);
+  const [ongoing, setOngoing] = useState([]);
+  const [complete, setComplete] = useState([]);
+
   const { register, handleSubmit, reset } = useForm();
   const [startDate, setStartDate] = useState(new Date());
   const { user } = useAuth();
@@ -42,8 +46,17 @@ const Dashboard = () => {
   const { data: todoTaskList = [], refetch } = useQuery({
     queryKey: ["todoTaskList"],
     queryFn: async () => {
-      const result = await fetchWithAxios.get("/todo");
-      // console.log(result.data);
+      const result = await fetchWithAxios.get("/task");
+      const newTodo = result?.data.filter((item) => item.action === "to-do");
+      setTodo(newTodo);
+      const newOngoing = result?.data.filter(
+        (item) => item.action === "ongoing"
+      );
+      setOngoing(newOngoing);
+      const newComplete = result?.data.filter(
+        (item) => item.action === "complete"
+      );
+      setComplete(newComplete);
       return result.data;
     },
   });
@@ -58,8 +71,8 @@ const Dashboard = () => {
     data["date"] = newDate;
     // console.log(data);
 
-    const res = await fetchWithAxios.post("/todo", data);
-    console.log(res.data);
+    const res = await fetchWithAxios.post("/task", data);
+    // console.log(res.data);
     if (res.data.insertedId) {
       refetch();
       toast.success("Create successfully");
@@ -70,7 +83,7 @@ const Dashboard = () => {
   };
 
   const deleteTask = async (id) => {
-    const res = await fetchWithAxios.delete(`/todo/${id}`);
+    const res = await fetchWithAxios.delete(`/task/${id}`);
     if (res.data.deletedCount) {
       refetch();
       toast.success("Delete successfully");
@@ -80,9 +93,9 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="px-[5%] mt-[60px] flex h-screen">
-      <div className=" bg-slate-100 w-2/12 h-full">
-        <div className="flex flex-col justify-center items-center space-y-2">
+    <div className="md:px-[5%] mt-[60px] flex h-screen">
+      <div className=" bg-slate-100 3-3/12 md:w-2/12 h-full">
+        <div className="flex flex-col justify-center items-center mt-2 space-y-1">
           <img
             src={user?.photoURL}
             alt=""
@@ -90,19 +103,31 @@ const Dashboard = () => {
           />
           <p className="text-sm">{user?.displayName}</p>
           <p className="text-sm">{user?.email}</p>
-          <div className="h-[1px] w-full bg-slate-500"></div>
+          <div className="h-[1px] w-[90%] bg-slate-500"></div>
         </div>
-        <div className="flex flex-col">
-          <NavLink>Sign Up</NavLink>
-          <NavLink>Sign Up</NavLink>
-          <NavLink>Sign Up</NavLink>
-          <NavLink>Sign Up</NavLink>
-          <NavLink>Sign Up</NavLink>
+        <div className="flex flex-col gap-2 mt-10">
+          <Button theme={customTheme} color="black">
+            <Link to="/dashboard">Dashboard</Link>
+          </Button>
+          <Button theme={customTheme} color="black">
+            <Link to="/">Home</Link>
+          </Button>
+          <Button theme={customTheme} color="black">
+            <Link to="/alltask">All Task</Link>
+          </Button>
+          <Button theme={customTheme} color="black">
+            <Link to="/login">Sign In</Link>
+          </Button>
+          <Button theme={customTheme} color="black">
+            <Link to="/register">Sign Up</Link>
+          </Button>
         </div>
       </div>
       <div className="p-8 bg-slate-300  flex-1 h-full overflow-y-auto">
         <div className="mb-5 flex justify-between">
-          <p className="text-2xl font-extrabold">Manage Task</p>
+          <p className="hidden md:block text-2xl font-extrabold">
+            Manage Your Task
+          </p>
           <div className="flex justify-center items-center">
             <Button
               onClick={() => setOpenModal(true)}
@@ -187,11 +212,17 @@ const Dashboard = () => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <TaskSection
             todoTaskList={todoTaskList}
             deleteTask={deleteTask}
             refetch={refetch}
+            todo={todo}
+            ongoing={ongoing}
+            complete={complete}
+            setTodo={setTodo}
+            setOngoing={setOngoing}
+            setComplete={setComplete}
           ></TaskSection>
         </div>
       </div>
